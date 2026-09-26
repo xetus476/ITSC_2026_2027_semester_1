@@ -4496,6 +4496,29 @@ files = [
 ]
 
 [[package]]
+name = "stable-baselines3"
+version = "2.9.0"
+description = "Pytorch version of Stable Baselines, implementations of reinforcement learning algorithms."
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "stable_baselines3-2.9.0-py3-none-any.whl", hash = "sha256:95f39a473dce081d1abe31acaf7cee446dcf223dcd74093d6ea460bc37e2e748"},
+    {file = "stable_baselines3-2.9.0.tar.gz", hash = "sha256:92b46c6099a0e8f99163ff09e26729e4d0a68b33dc8598626ca13ade3c0b3a61"},
+]
+
+[package.dependencies]
+cloudpickle = "*"
+gymnasium = ">=0.29.1,<2.0"
+numpy = ">=1.20,<3.0"
+torch = ">=2.8,<3.0"
+
+[package.extras]
+docs = ["myst-parser (>=4,<6)", "sphinx (>=5,<10)", "sphinx-autobuild", "sphinx-rtd-theme (>=3.0.0)", "sphinx_copybutton", "sphinxcontrib.spelling"]
+extra = ["ale-py (>=0.9.0)", "matplotlib", "opencv-python", "pandas", "pillow", "psutil", "pygame-ce", "rich", "tensorboard (>=2.9.1)", "tqdm"]
+tests = ["black (>=26.1.0,<27)", "mypy (>=1.9.0,<2)", "pytest", "pytest-cov", "pytest-env", "pytest-xdist", "ruff (>=0.5.6)"]
+
+[[package]]
 name = "starlette"
 version = "1.6.0"
 description = "The little ASGI library that shines."
@@ -5935,4 +5958,4 @@ type = ["pytest-mypy (>=1.0.1) ; platform_python_implementation != \"PyPy\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.14"
-content-hash = "695ec56b92dabd295faf897f93ed21d4cd201ce3dfe727c058b067534dc6ba61"
+content-hash = "fcc3319926b1b02cef0c0205dc9be86f495b90d5802590d797520142ffbaaf13"
