@@ -82,34 +82,33 @@ class Browser2048Env:
         try:
             score = self.driver.execute_script("""
                 const elements = [...document.querySelectorAll('*')];
-
+    
                 for (const el of elements) {
                     if ((el.innerText || '').trim() === 'SCORE') {
-
+    
                         const parent = el.parentElement;
-
+    
                         if (!parent) {
                             continue;
                         }
-
+    
                         const numbers = parent.innerText.match(/\\d+/g);
-
+    
                         if (numbers && numbers.length > 0) {
                             return parseInt(numbers[0], 10);
                         }
                     }
                 }
-
+    
                 return null;
             """)
-
+    
             if score is not None:
-                self.last_score = int(score)
                 return int(score)
-
+    
         except Exception as e:
             print("SCORE ERROR:", e)
-
+    
         return self.last_score
 
     def get_screenshot_state(self):
@@ -185,51 +184,51 @@ class Browser2048Env:
     def step(self, action_idx):
         try:
             state = self.get_screenshot_state()
-    
+
             print("ACTION:", action_idx)
-    
+
             ActionChains(self.driver).send_keys(
                 self.actions[action_idx]
             ).perform()
-    
+
             time.sleep(0.2)
-    
+
             next_state = self.get_screenshot_state()
-    
+
             # Получаем новый score
             current_score = self.get_score()
-    
+
             # ВАЖНО:
             # last_score здесь ещё должен содержать score ДО действия
             score_diff = current_score - self.last_score
-    
+
             done = self.is_game_over()
-    
+
             print(
                 f"STATE CHANGED: {not np.array_equal(state, next_state)}"
             )
             print(f"SCORE: {current_score}")
             print(f"LAST SCORE: {self.last_score}")
             print(f"SCORE DIFF: {score_diff}")
-    
+
             # Reward
             if done:
                 reward = -10.0
-    
+
             elif np.array_equal(state, next_state):
                 reward = -2.0
-    
+
             elif score_diff > 0:
                 reward = float(score_diff)
-    
+
             else:
                 reward = 0.0
-    
+
             # ВОТ ЗДЕСЬ обновляем last_score
             self.last_score = current_score
-    
+
             return next_state, reward, done
-    
+
         except Exception as e:
             print(f"ОШИБКА ВНУТРИ STEP: {e}")
             raise
