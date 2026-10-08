@@ -82,33 +82,33 @@ class Browser2048Env:
         try:
             score = self.driver.execute_script("""
                 const elements = [...document.querySelectorAll('*')];
-    
+
                 for (const el of elements) {
                     if ((el.innerText || '').trim() === 'SCORE') {
-    
+
                         const parent = el.parentElement;
-    
+
                         if (!parent) {
                             continue;
                         }
-    
+
                         const numbers = parent.innerText.match(/\\d+/g);
-    
+
                         if (numbers && numbers.length > 0) {
                             return parseInt(numbers[0], 10);
                         }
                     }
                 }
-    
+
                 return null;
             """)
-    
+
             if score is not None:
                 return int(score)
-    
+
         except Exception as e:
             print("SCORE ERROR:", e)
-    
+
         return self.last_score
 
     def get_screenshot_state(self):
@@ -185,7 +185,7 @@ class Browser2048Env:
         try:
             state = self.get_screenshot_state()
 
-            print("ACTION:", action_idx)
+            #print("ACTION:", action_idx)
 
             ActionChains(self.driver).send_keys(
                 self.actions[action_idx]
@@ -204,12 +204,12 @@ class Browser2048Env:
 
             done = self.is_game_over()
 
-            print(
-                f"STATE CHANGED: {not np.array_equal(state, next_state)}"
-            )
-            print(f"SCORE: {current_score}")
-            print(f"LAST SCORE: {self.last_score}")
-            print(f"SCORE DIFF: {score_diff}")
+            # print(
+            #     f"STATE CHANGED: {not np.array_equal(state, next_state)}"
+            # )
+            # print(f"SCORE: {current_score}")
+            # print(f"LAST SCORE: {self.last_score}")
+            # print(f"SCORE DIFF: {score_diff}")
 
             # Reward
             if done:
@@ -268,7 +268,7 @@ def train():
     EPS_DECAY = 0.995
     TARGET_UPDATE = 10
     LEARNING_RATE = 0.00025
-    NUM_EPISODES = 50
+    NUM_EPISODES = 10
 
     env = Browser2048Env(headless=False)
 
@@ -300,7 +300,7 @@ def train():
                     action = q_values.argmax(dim=1).item()
 
             next_state, reward, done = env.step(action)
-            print(f"Шаг выполнен | Reward: {reward} | Done: {done}")
+            #print(f"Шаг выполнен | Reward: {reward} | Done: {done}")
             # Выполнение действия в браузере
             #next_state, reward, done = env.step(action)
             total_reward += reward
